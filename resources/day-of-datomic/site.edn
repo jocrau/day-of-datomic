@@ -1,0 +1,76 @@
+[;; person example
+ {:db/id                   #db/id [:db.part/user -300015]
+  :resource/id             #uuid "16447494-fa8c-4f6f-90d4-6a68eff9d7c8"
+  :xnl/person-name         [{:xnl/person-name-type :xnl.person-name-type/LegalName
+                             :xnl/name-element     [{:content/value    "Jochen"
+                                                     :xnl/element-type :xnl.element-type/FirstName}
+                                                    {:content/value    "Rau"
+                                                     :xnl/element-type :xnl.element-type/LastName}]}]
+  :coho/membership         [{:coho/party      #db/id [:db.part/user -200023]
+                             :coho/valid-from #inst "2012-11-01T00:00:00+00:00"}]
+  :xpil/birth-info         {:xpil/birth-date-time     #inst "1971-03-15T00:00:00+00:00"
+                            :coho/date-time-precision :coho.date-time-precision/DayMonthYear}
+  :xpil/electronic-address [{:xpil/identifier "jochen@rau-family.us"
+                             :xpil/service    :xpil.service/Email
+                             :xpil/usage      :xpil.usage/Private}
+                            {:xpil/identifier "jrau@infinitecloud.com"
+                             :xpil/service    :xpil.service/Email
+                             :xpil/usage      :xpil.usage/Business}
+                            {:xpil/identifier "jocrau"
+                             :xpil/service    :xpil.service/Skype
+                             :xpil/usage      :xpil.usage/Private}]
+  :xpil/telephone-number   [{:xpil/area-code     "413"
+                             :xpil/exchange-code "695"
+                             :xpil/local-number  "2315"
+                             :xpil/usage         [:xpil.usage/Private :xpil.usage/Primary]
+                             :xpil/media-type    :xpil.media-type/Mobile}]}
+
+ ;; household example
+ {:db/id       #db/id [:db.part/user -200023]
+  :resource/id #uuid "7741E7E9-2783-47C5-964B-974F6F668BD9"
+  :xal/address [{:xal/locality            {:xal/name-element [{:content/value "Amherst"}]}
+                 :xal/administrative-area {:xal/name-element [{:content/value "MA"}]}
+                 :xal/post-code           {:xal/identifier "01002"}
+                 :xal/premises            {:xal/name-element [{:content/value "Unit 23"}]}
+                 :xal/thoroughfare        {:xal/name-element [{:content/value "120 Pulpit Hill Rd."}]}
+                 :xal/country             {:xal/identifier "US"}
+                 :xal/latitude            "42.418236"
+                 :xal/logitude            "-72.521761"}]}
+
+ {:first-name "Jochen"
+  :last-name  "Rau"
+  :age        44
+  :address    {:locality            "Amherst"
+               :administrative-area "MA"
+               :post-code           "01002"
+               :thoroughfare        "120 Pulpit Hill Rd."
+               :premises            "Unit 23"}
+  :phone      #{{:area-code     "413"
+                 :exchange-code "695"
+                 :local-number  "2315"
+                 :usage         [:private :primary]
+                 :media-type    :mobile
+                 :valid-from    #inst "2012-11-01T00:00:00+00:00"}}}
+
+ [:person1 :first-name "Jochen"]
+ [:person1 :age 44]
+ [:person1 :address :addr1]
+ [:person1 :phone :ph1]
+
+ [:addr1 :locality "Amherst"]
+
+ [:ph1 :area-code "413"]
+ [:ph1 :usage :private]
+ [:ph1 :usage :primary]
+
+ [:db/add entity-id attribute value]
+ [:db/retract entity-id attribute value]
+
+
+ {:db/id      42
+  :first-name "Jochen"
+  :last-name  "Rau"
+  :age        45
+  :likes      "Veggies"}
+
+ ]
