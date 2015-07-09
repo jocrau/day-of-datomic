@@ -14,10 +14,6 @@
 (d/create-database uri)
 (def conn (d/connect uri))
 
-;; get the DB as value
-(def db (d/db conn))
-
-
 ;; SCHEMA
 @(d/transact conn
              [{:db/id                 #db/id[:db.part/db]
@@ -41,6 +37,8 @@
                :db/cardinality        :db.cardinality/one
                :db.install/_attribute :db.part/db}])
 
+(def db (d/db conn))
+
 ;; ENTITIES
 @(d/transact conn
              [{:db/id       #db/id[:db.part/user -2]
@@ -50,14 +48,38 @@
                :ex/age        44
                :ex/address    #db/id[:db.part/user -2]}])
 
-
 (d/q '[:find ?e
-         :in $ ?name
-         :where [?e :ex/first-name ?name]]
-       db "Jochen")
+       :in $ ?name
+       :where [?e :ex/first-name ?name]]
+     db "Jochen")
 
-;; This doesn’t work, yet.
-;; Extend the schema above so that we can transact this entity.
+;; Hmm, why doesn't this find anything??!
+
+(def person (d/entity db (d/q '[:find ?e .
+                                :in $ ?name
+                                :where [?e :ex/first-name ?name]]
+                              db "Jochen")))
+
+person
+
+(:ex/first-name person)
+
+(-> person :ex/address)
+
+(d/touch (-> person :ex/address))
+
+(-> person :ex/address)
+
+(-> person :ex/address :ex/locality)
+
+(def address (d/entity db (d/q '[:find ?e .
+                                 :where [?e :ex/locality]]
+                               db)))
+
+(:ex/_address address)
+
+(-> (:ex/_address address) first d/touch)
+
 @(d/transact conn
              [{:ex/first-name "Jochen"
                :ex/last-name  "Rau"
@@ -74,6 +96,9 @@
                                 :ex/usage         [:private :primary]
                                 :ex/media-type    :mobile
                                 :ex/valid-from    #inst "2012-11-01T00:00:00+00:00"}]}])
+;; This doesn’t work, either. OMG!
+;; TODO Extend schema http://docs.datomic.com/schema.html
+;; TODO Head over to http://docs.datomic.com/query.html and get creative
 
 (d/delete-database uri)
 (d/release conn)
