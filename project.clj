@@ -2,6 +2,7 @@
   :description "Sample Code for Day of Datomic Presentation"
   :plugins [[lein-tg "0.0.1"]]
   :jvm-opts ["-Xmx1g" "-Xms1g" "-server"]
+  :source-paths ["src" "tutorial"]
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/test.generative "0.3.0"]
                  [com.datomic/datomic-free "0.9.5153"]
