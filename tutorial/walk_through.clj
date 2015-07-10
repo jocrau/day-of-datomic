@@ -72,6 +72,10 @@ person
 
 (-> person :ex/address :ex/locality)
 
+(d/q '[:find ?e .
+       :where [?e :ex/locality]]
+     db)
+
 (def address (d/entity db (d/q '[:find ?e .
                                  :where [?e :ex/locality]]
                                db)))
@@ -79,6 +83,8 @@ person
 (:ex/_address address)
 
 (-> (:ex/_address address) first d/touch)
+
+(clojure.pprint/pprint (into {} person))
 
 @(d/transact conn
              [{:ex/first-name "Jochen"
